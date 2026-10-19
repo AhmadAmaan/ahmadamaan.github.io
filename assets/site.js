@@ -39,14 +39,12 @@ document.querySelectorAll('.scene-node-labels a').forEach(link=>{
 });
 
 let motionContext = null;
-let userPaused = false;
-try { userPaused = localStorage.getItem('portfolio-motion-paused') === 'true'; } catch {}
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
 const wideScreen = window.matchMedia('(min-width: 721px)');
 const gsap = window.gsap;
 const siteVersion = new URL(document.currentScript?.src || location.href).searchParams.get('v') || 'current';
-const motionAllowed = () => !!gsap && !userPaused && !reduceMotion.matches;
+const motionAllowed = () => !!gsap && !reduceMotion.matches;
 
 document.querySelectorAll('.timeline-item').forEach(card=>{
   card.addEventListener('pointermove',event=>{
@@ -139,10 +137,9 @@ function setupMotion() {
         .from('.hero-role, .hero-copy, .hero-words .actions',{opacity:0,y:16,duration:.7,stagger:.1},'-.65')
         .from('.sculpture-stage',{opacity:0,scale:.96,duration:1.2},'<')
         .from('.hero-foot > *',{opacity:0,y:8,duration:.6,stagger:.07},'-.8');
-      if (wideScreen.matches) {
-        loops.push(gsap.to('.ambient-one',{x:-85,y:35,scale:1.15,duration:13,repeat:-1,yoyo:true,ease:'sine.inOut'}));
-        loops.push(gsap.to('.ambient-two',{x:65,y:-55,duration:16,repeat:-1,yoyo:true,ease:'sine.inOut'}));
-      }
+      const drift=wideScreen.matches?1:.3;
+      loops.push(gsap.to('.ambient-one',{x:-85*drift,y:35*drift,scale:1.15,duration:13,repeat:-1,yoyo:true,ease:'sine.inOut'}));
+      loops.push(gsap.to('.ambient-two',{x:65*drift,y:-55*drift,duration:16,repeat:-1,yoyo:true,ease:'sine.inOut'}));
       if (finePointer.matches && wideScreen.matches) {
         const stage = document.querySelector('.sculpture-stage');
         const sculpture = document.querySelector('.systems-sculpture');
@@ -177,6 +174,15 @@ function setupMotion() {
         listen(parts.visual,'pointerenter',play);
         listen(parts.visual,'pointermove',event=>{const r=parts.visual.getBoundingClientRect();xTo((event.clientX-r.left-r.width/2)/r.width*5);yTo(-(event.clientY-r.top-r.height/2)/r.height*4);});
         listen(parts.visual,'pointerleave',()=>{xTo(0);yTo(0);});
+      } else {
+        const previewObserver=new IntersectionObserver(entries=>{
+          entries.forEach(entry=>{
+            if(!entry.isIntersecting || !motionAllowed())return;
+            play();previewObserver.unobserve(entry.target);
+          });
+        },{threshold:.35});
+        previewObserver.observe(parts.visual);
+        cleanup.push(()=>previewObserver.disconnect());
       }
       cleanup.push(()=>{activeTween?.revert();gsap.set(parts.svg,{clearProps:'transform'});});
     });
@@ -185,39 +191,26 @@ function setupMotion() {
 }
 
 if (gsap) {
-  const motionButton=document.createElement('button');
-  motionButton.className='motion-button'; motionButton.type='button';
-  const labelButton = () => {
-    const stopped=userPaused || reduceMotion.matches;
-    document.documentElement.classList.toggle('motion-paused',stopped);
+  const applyMotionPreference = () => {
+    document.documentElement.classList.toggle('motion-paused',reduceMotion.matches);
     let preferenceStyle=document.querySelector('#motion-preference');
     if(!preferenceStyle){preferenceStyle=document.createElement('style');preferenceStyle.id='motion-preference';document.head.appendChild(preferenceStyle);}
-    preferenceStyle.textContent=stopped?'@view-transition{navigation:none}':'';
-    motionButton.innerHTML=`<span aria-hidden="true">${stopped?'▷':'Ⅱ'}</span><span>${stopped?'Motion off':'Pause motion'}</span>`;
-    motionButton.setAttribute('aria-pressed',String(stopped));
-    motionButton.setAttribute('aria-label',reduceMotion.matches?'Motion disabled by your reduced-motion preference':stopped?'Enable motion':'Pause motion');
-    motionButton.disabled=reduceMotion.matches;
+    preferenceStyle.textContent=reduceMotion.matches?'@view-transition{navigation:none}':'';
   };
-  motionButton.addEventListener('click',()=>{
-    userPaused=!userPaused;
-    try {localStorage.setItem('portfolio-motion-paused',String(userPaused));} catch {}
-    labelButton();setupMotion();
-  });
-  document.body.appendChild(motionButton);
-  reduceMotion.addEventListener('change',()=>{labelButton();setupMotion();});
+  reduceMotion.addEventListener('change',()=>{applyMotionPreference();setupMotion();});
   finePointer.addEventListener('change',setupMotion);
   wideScreen.addEventListener('change',setupMotion);
-  labelButton();setupMotion();
+  applyMotionPreference();setupMotion();
 }
 
 
 if (hero) {
   let disposeScene=null;
   let generation=0;
-  const isPaused=()=>userPaused || reduceMotion.matches;
+  const isPaused=()=>reduceMotion.matches;
   async function syncScene() {
     const ticket=++generation;
-    const eligible=wideScreen.matches && !reduceMotion.matches && !navigator.connection?.saveData && (navigator.deviceMemory===undefined || navigator.deviceMemory>=4);
+    const eligible=!reduceMotion.matches && !navigator.connection?.saveData;
     if(!eligible){disposeScene?.();disposeScene=null;document.body.classList.remove('has-webgl');return;}
     if(disposeScene)return;
     try {

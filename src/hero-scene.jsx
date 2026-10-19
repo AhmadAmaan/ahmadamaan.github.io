@@ -46,7 +46,7 @@ function Architecture({ model, host, hero, stage, isPaused }) {
   const time = useRef(0);
   const firstFrame = useRef(true);
   useEffect(()=>{
-    camera.zoom=clamp(size.width*.105,62,105);
+    camera.zoom=matchMedia('(max-width: 720px)').matches?clamp((size.width-112)/5.3,26,58):clamp(size.width*.105,62,105);
     camera.updateProjectionMatrix();invalidate();
   },[camera,invalidate,size.width]);
   const materials = useMemo(() => ({
@@ -81,7 +81,7 @@ function Architecture({ model, host, hero, stage, isPaused }) {
       active = !document.hidden && r.bottom > 88 && r.top < innerHeight && !isPaused();
       model.active = active;
       if(!active)window.gsap?.killTweensOf(model);
-      if (active) { invalidate(); timer = setInterval(invalidate, 1000 / 30); }
+      if (active) { invalidate(); timer = setInterval(invalidate, 1000 / (matchMedia('(max-width: 720px)').matches?24:30)); }
     };
     const onMotion = () => update();
     const observer = new IntersectionObserver(update, {threshold:0});
@@ -89,7 +89,7 @@ function Architecture({ model, host, hero, stage, isPaused }) {
     document.addEventListener('visibilitychange', update);
     window.addEventListener('portfolio:motion', onMotion);
     const onMove = event => {
-      if (!active || !matchMedia('(pointer:fine)').matches) return;
+      if (!active || (event.pointerType==='mouse' && !matchMedia('(pointer:fine)').matches)) return;
       const r = stage.getBoundingClientRect();
       model.pointerX = clamp((event.clientX-r.left)/r.width-.5,-.5,.5);
       model.pointerY = clamp((event.clientY-r.top)/r.height-.5,-.5,.5);
@@ -97,6 +97,10 @@ function Architecture({ model, host, hero, stage, isPaused }) {
     };
     const onLeave = () => { model.pointerX = 0; model.pointerY = 0; invalidate(); };
     stage.addEventListener('pointermove', onMove);stage.addEventListener('pointerleave', onLeave);
+    const onTouchEnd=event=>{if(event.pointerType!=='mouse')onLeave();};
+    stage.addEventListener('pointerdown',onMove);
+    stage.addEventListener('pointerup',onTouchEnd);
+    stage.addEventListener('pointercancel',onTouchEnd);
     const nodeLinks=[...stage.querySelectorAll('[data-node-name]')];
     const highlight=event=>{
       const link=event.target.closest('[data-node-name]');
@@ -126,6 +130,9 @@ function Architecture({ model, host, hero, stage, isPaused }) {
       window.removeEventListener('portfolio:motion',onMotion);
       document.removeEventListener('visibilitychange',update);
       stage.removeEventListener('pointermove',onMove);stage.removeEventListener('pointerleave',onLeave);
+      stage.removeEventListener('pointerdown',onMove);
+      stage.removeEventListener('pointerup',onTouchEnd);
+      stage.removeEventListener('pointercancel',onTouchEnd);
       nodeLinks.forEach(link=>{link.removeEventListener('pointerenter',highlight);link.removeEventListener('focus',highlight);link.removeEventListener('pointerleave',unhighlight);link.removeEventListener('blur',unhighlight);});
       model.active=false;
     };
@@ -173,7 +180,8 @@ function Architecture({ model, host, hero, stage, isPaused }) {
       if(!node||!label)return;
       node.getWorldPosition(projected);projected.project(camera);
       label.style.left=`${(projected.x*.5+.5)*size.width}px`;
-      label.style.top=`${(-projected.y*.5+.5)*size.height+35}px`;
+      const labelOffset=matchMedia('(max-width: 720px)').matches?(i<2?-32:32):35;
+      label.style.top=`${(-projected.y*.5+.5)*size.height+labelOffset}px`;
       label.classList.toggle('is-active',model.hovered===i);
     });
     model.frames++;
@@ -222,8 +230,9 @@ export function mountHero({ host, stage, hero, isPaused }) {
   const model={progress:0,pointerX:0,pointerY:0,hovered:-1,active:false,frames:0};
   window.__portfolioScene=model;
   const root=createRoot(host);
+  const mobile=matchMedia('(max-width: 720px)').matches;
   const onFailure=()=>{stage.classList.remove('scene-ready');document.body.classList.remove('has-webgl');host.dataset.scene='fallback';model.active=false;};
-  root.render(<SceneBoundary onFailure={onFailure}><Canvas orthographic camera={{position:[0,6,8],zoom:85,near:.1,far:80}} dpr={[1,1.5]} frameloop="demand" gl={{alpha:true,antialias:true,powerPreference:'low-power'}} fallback={null} onCreated={({gl})=>{
+  root.render(<SceneBoundary onFailure={onFailure}><Canvas orthographic camera={{position:[0,6,8],zoom:85,near:.1,far:80}} dpr={[1,mobile?1.15:1.5]} frameloop="demand" gl={{alpha:true,antialias:true,powerPreference:'low-power'}} fallback={null} onCreated={({gl})=>{
     gl.setClearColor(0x000000,0);
     const canvas=gl.domElement;
     canvas.setAttribute('aria-hidden','true');
