@@ -92,7 +92,7 @@
     {
       "title": "BorderPay",
       "url": "https://github.com/AhmadAmaan/BorderPay",
-      "description": "A collaborative course project for managing employer–employee contracts and salary transactions on Hyperledger Fabric. It combines Go chaincode with Node.js/Express APIs and a React interface for user, contract, and payment workflows.",
+      "description": "My end-term project for the course CS731 (Blockchain Technology & Application), developed as a team of two to manage employer–employee contracts and salary transactions on Hyperledger Fabric. It combines Go chaincode with Node.js/Express APIs and a React interface for user, contract, and payment workflows.",
       "stack": [
         "Go",
         "Hyperledger Fabric",
@@ -106,7 +106,7 @@
     {
       "title": "Fraud Detection",
       "url": "https://github.com/AhmadAmaan/Fraud-Detection",
-      "description": "A machine-learning study of fraudulent transactions in an imbalanced dataset of over 1.8 million records. I explored preprocessing, feature selection, resampling, and comparisons between SVM, neural-network, and Random Forest classifiers, focusing on recall and evaluation under class imbalance.",
+      "description": "A project I worked on under Prof. Tushar Sandhan during my summer holidays, studying fraudulent transactions in an imbalanced dataset of over 1.8 million records. I explored preprocessing, feature selection, resampling, and comparisons between SVM, neural-network, and Random Forest classifiers, focusing on recall and evaluation under class imbalance.",
       "stack": [
         "Python",
         "Pandas",
@@ -117,32 +117,37 @@
       "placement": "more_projects"
     },
     {
+      "title": "Codeforces Stress Testing Platform",
+      "description": "A project I worked on under IIT Kanpur’s Programming Club, using Go concurrency, web scraping, database integration, and automated grading to stress-test Codeforces submissions.",
+      "placement": "more_projects"
+    },
+    {
       "title": "Computer Graphics Explorations",
       "url": "https://github.com/AhmadAmaan/CS360-IntroToComputerGraphics",
-      "description": "A collection of five computer graphics assignments built with JavaScript and WebGL, exploring rendering through browser-based implementations.",
-      "placement": "coursework"
+      "description": "A collection of all five computer graphics assignments for the course CS360-IntroToComputerGraphics, built with JavaScript and WebGL to explore rendering through browser-based implementations.",
+      "placement": "coursework",
+      "course_name": "CS360-IntroToComputerGraphics"
     },
     {
       "title": "Image Processing Coursework",
       "url": "https://github.com/AhmadAmaan/EE604-ImageProcessing",
-      "description": "Python and notebook implementations developed for IIT Kanpur’s image processing course, documenting practical work with image-processing algorithms and visual data.",
-      "placement": "coursework"
+      "description": "Assignments for the course EE604-ImageProcessing during college, implemented in Python and Jupyter notebooks to explore image-processing algorithms and visual data.",
+      "placement": "coursework",
+      "course_name": "EE604-ImageProcessing"
     },
     {
       "title": "Territorial Attack",
       "url": "https://github.com/AhmadAmaan/Territorial-Attack",
-      "description": "A team game-development project from IIT Kanpur’s Game Development Society, built in Unity with C# gameplay scripts, character controls, combat mechanics, and game UI.",
-      "placement": "more_projects"
+      "description": "A collaborative project from my first summer on campus, where we built a game under IIT Kanpur’s Game Development Society. Built in Unity with C# gameplay scripts, character controls, combat mechanics, and game UI. Our game was also featured on Google Play by IIT Kanpur’s Science and Technology Council (SnT).",
+      "placement": "more_projects",
+      "description_links": {
+        "Science and Technology Council (SnT)": "https://sntiitk.co.in/"
+      }
     },
     {
       "title": "Amazon Price Tracker",
       "url": "https://github.com/AhmadAmaan/Price-Tracker",
-      "description": "A Python automation project that checks an Amazon product’s price and sends an email alert when it drops, combining HTML parsing, recurring checks, and SMTP notifications.",
-      "placement": "more_projects"
-    },
-    {
-      "title": "Codeforces Stress Testing Platform",
-      "description": "A programming-club project using Go concurrency, web scraping, database integration, and automated grading to stress-test Codeforces submissions.",
+      "description": "After a senior introduced me to web scraping, I built this in a couple of hours. It checks an Amazon product’s price and sends an email alert when it drops, using Python, HTML parsing, recurring checks, and SMTP notifications.",
       "placement": "more_projects"
     }
   ],
