@@ -224,4 +224,5 @@ a.research-art:focus-visible,.research-title-link:focus-visible{outline:2px soli
   .portfolio-map.scene-ready .scene-node-labels a>span{font-size:8px}
 }
 
-.about-left h2.eyebrow{font-size:11px;font-weight:400;line-height:1.4;margin:0 0 20px}
+
+.section-heading .section-title,.about-left .section-title{font-family:var(--sans,inherit);font-size:clamp(18px,1.6vw,23px);font-weight:500;line-height:1.4;letter-spacing:.025em;color:var(--ink);margin:0}
