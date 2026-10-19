@@ -81,7 +81,7 @@ function Architecture({ model, host, hero, stage, isPaused }) {
       active = !document.hidden && r.bottom > 88 && r.top < innerHeight && !isPaused();
       model.active = active;
       if(!active)window.gsap?.killTweensOf(model);
-      if (active) { invalidate(); timer = setInterval(invalidate, 1000 / (matchMedia('(max-width: 720px)').matches?24:30)); }
+      if (active) { invalidate(); timer = setInterval(invalidate, 1000 / 30); }
     };
     const onMotion = () => update();
     const observer = new IntersectionObserver(update, {threshold:0});
@@ -230,9 +230,8 @@ export function mountHero({ host, stage, hero, isPaused }) {
   const model={progress:0,pointerX:0,pointerY:0,hovered:-1,active:false,frames:0};
   window.__portfolioScene=model;
   const root=createRoot(host);
-  const mobile=matchMedia('(max-width: 720px)').matches;
   const onFailure=()=>{stage.classList.remove('scene-ready');document.body.classList.remove('has-webgl');host.dataset.scene='fallback';model.active=false;};
-  root.render(<SceneBoundary onFailure={onFailure}><Canvas orthographic camera={{position:[0,6,8],zoom:85,near:.1,far:80}} dpr={[1,mobile?1.15:1.5]} frameloop="demand" gl={{alpha:true,antialias:true,powerPreference:'low-power'}} fallback={null} onCreated={({gl})=>{
+  root.render(<SceneBoundary onFailure={onFailure}><Canvas orthographic camera={{position:[0,6,8],zoom:85,near:.1,far:80}} dpr={[1,2]} frameloop="demand" gl={{alpha:true,antialias:true,powerPreference:'low-power'}} fallback={null} onCreated={({gl})=>{
     gl.setClearColor(0x000000,0);
     const canvas=gl.domElement;
     canvas.setAttribute('aria-hidden','true');

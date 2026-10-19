@@ -175,14 +175,22 @@ function setupMotion() {
         listen(parts.visual,'pointermove',event=>{const r=parts.visual.getBoundingClientRect();xTo((event.clientX-r.left-r.width/2)/r.width*5);yTo(-(event.clientY-r.top-r.height/2)/r.height*4);});
         listen(parts.visual,'pointerleave',()=>{xTo(0);yTo(0);});
       } else {
+        let inView=false;
+        let replayTimer=null;
+        const drift=gsap.fromTo(parts.svg,{rotationY:-2,rotationX:1.1,scale:1.015},{rotationY:2,rotationX:-1.1,scale:1.035,duration:2.4,repeat:-1,yoyo:true,ease:'sine.inOut',paused:true,transformOrigin:'50% 50%'});
+        const syncPreview=()=>{
+          const active=inView && !document.hidden && motionAllowed();
+          drift.paused(!active);
+          if(active && replayTimer===null){play();replayTimer=setInterval(play,3200);}
+          if(!active){clearInterval(replayTimer);replayTimer=null;activeTween?.pause();}
+        };
         const previewObserver=new IntersectionObserver(entries=>{
-          entries.forEach(entry=>{
-            if(!entry.isIntersecting || !motionAllowed())return;
-            play();previewObserver.unobserve(entry.target);
-          });
-        },{threshold:.35});
+          entries.forEach(entry=>{inView=entry.isIntersecting && entry.intersectionRatio>=.35;syncPreview();});
+        },{threshold:[0,.35]});
         previewObserver.observe(parts.visual);
-        cleanup.push(()=>previewObserver.disconnect());
+        listen(document,'visibilitychange',syncPreview);
+        listen(parts.visual,'pointerdown',play);
+        cleanup.push(()=>{previewObserver.disconnect();clearInterval(replayTimer);drift.revert();});
       }
       cleanup.push(()=>{activeTween?.revert();gsap.set(parts.svg,{clearProps:'transform'});});
     });
