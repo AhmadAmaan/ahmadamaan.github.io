@@ -1,0 +1,157 @@
+{
+  "name": "Ahmad Amaan",
+  "headline": "Software engineer building reliable backend systems and AI applications.",
+  "about": "I’m a Platform Software Engineer 2 at Oracle and an IIT Kanpur graduate. My work spans distributed workflows, database persistence, APIs, CI/CD, and observability. Outside work, I build applications that turn complex systems and data into tools people can use, from LLM telemetry and application coaching to football simulations. I also co-authored research on uncertainty in neural networks published in IEEE Transactions on Visualization and Computer Graphics.",
+  "links": {
+    "github": "https://github.com/AhmadAmaan",
+    "linkedin": "https://www.linkedin.com/in/ahmad-amaan",
+    "paper": "https://ieeexplore.ieee.org/document/10541088",
+    "writing": "https://aamaan.substack.com/p/ronaldos-last-dance-i-built-a-world"
+  },
+  "projects": [
+    {
+      "title": "LLM Inference Logging",
+      "url": "https://github.com/AhmadAmaan/llm-inference-logging",
+      "description": "A provider-agnostic TypeScript SDK and dashboard for understanding LLM requests. It captures latency, token usage, errors, and redacted previews, with PostgreSQL-backed event storage and a Redis/BullMQ worker for asynchronous ingestion. A streaming chat interface demonstrates the instrumentation end to end.",
+      "stack": [
+        "TypeScript",
+        "Next.js",
+        "React",
+        "PostgreSQL",
+        "Redis",
+        "BullMQ",
+        "Docker",
+        "Helm"
+      ],
+      "featured": true
+    },
+    {
+      "title": "Applywise — AI Application Coach",
+      "url": "https://github.com/AhmadAmaan/Applywise_AI",
+      "description": "An AI application coach that turns a candidate’s experience and a job description into an editable preparation plan. It combines contextual chat, resume bullet drafts, interview questions, and checklists, with persistent session state and checkpointed generation workflows.",
+      "stack": [
+        "React",
+        "TypeScript",
+        "Cloudflare Workers AI",
+        "Durable Objects",
+        "Workflows"
+      ],
+      "featured": true
+    },
+    {
+      "title": "Fuelwise — Fuel Route Planner",
+      "url": "https://github.com/AhmadAmaan/fuel-route-planner",
+      "description": "A Django API that plans US road trips with fuel stops, purchase quantities, cost estimates, and interactive maps. It combines road routing, station identity matching, spatial search, fuel-range validation, caching, and a bounded detour search when the direct route lacks coverage.",
+      "stack": [
+        "Python",
+        "Django",
+        "OSRM",
+        "Shapely",
+        "Leaflet"
+      ],
+      "featured": true
+    },
+    {
+      "title": "MerchantPay",
+      "url": "https://github.com/AhmadAmaan/MerchantPay",
+      "description": "A merchant payment prototype focused on reliable accounting. A Go API manages idempotent payment intents, verifies finalized Solana devnet transfers, and records balanced ledger entries for reconciliation. A TypeScript checkout provides payment QR codes while signing remains in the user’s external wallet.",
+      "stack": [
+        "Go",
+        "PostgreSQL",
+        "TypeScript",
+        "React",
+        "Solana devnet"
+      ],
+      "featured": true
+    },
+    {
+      "title": "World Cup 2026 Monte Carlo Predictor",
+      "url": "https://github.com/AhmadAmaan/monte-carlo-worldcup-2026-predictor",
+      "description": "A transparent football forecasting model combining Elo-style ratings, attack and defence profiles, squad information, and tournament rules. I ran 100,000 tournament simulations to estimate each team’s chances of progressing and winning, then explained the approach and its limitations in a Substack article.",
+      "stack": [
+        "Python",
+        "Monte Carlo simulation",
+        "Elo ratings",
+        "Statistical modelling"
+      ],
+      "featured": true
+    },
+    {
+      "title": "Prediction Uncertainty in Deep Image Synthesis",
+      "url": "https://github.com/AhmadAmaan/Visual-Analysis-of-Prediction-Uncertainty-in-Neural-Networks-for-Deep-Image-Synthesis-",
+      "description": "Co-authored IEEE TVCG research investigating how neural networks express uncertainty in scientific image synthesis. My work examined pixel-level uncertainty, prediction error, and gradient sensitivity using MC-Dropout and Deep Ensembles, alongside an interactive visualization interface for exploring model behaviour.",
+      "stack": [
+        "Python",
+        "Neural networks",
+        "React",
+        "D3",
+        "Scientific visualization"
+      ],
+      "placement": "research"
+    },
+    {
+      "title": "BorderPay",
+      "url": "https://github.com/AhmadAmaan/BorderPay",
+      "description": "A collaborative course project for managing employer–employee contracts and salary transactions on Hyperledger Fabric. It combines Go chaincode with Node.js/Express APIs and a React interface for user, contract, and payment workflows.",
+      "stack": [
+        "Go",
+        "Hyperledger Fabric",
+        "Node.js",
+        "Express",
+        "React",
+        "Tailwind CSS"
+      ],
+      "placement": "more_projects"
+    },
+    {
+      "title": "Fraud Detection",
+      "url": "https://github.com/AhmadAmaan/Fraud-Detection",
+      "description": "A machine-learning study of fraudulent transactions in an imbalanced dataset of over 1.8 million records. I explored preprocessing, feature selection, resampling, and comparisons between SVM, neural-network, and Random Forest classifiers, focusing on recall and evaluation under class imbalance.",
+      "stack": [
+        "Python",
+        "Pandas",
+        "Scikit-learn",
+        "TensorFlow",
+        "SMOTE"
+      ],
+      "placement": "more_projects"
+    },
+    {
+      "title": "Computer Graphics Explorations",
+      "url": "https://github.com/AhmadAmaan/CS360-IntroToComputerGraphics",
+      "description": "A collection of five computer graphics assignments built with JavaScript and WebGL, exploring rendering through browser-based implementations.",
+      "placement": "coursework"
+    },
+    {
+      "title": "Image Processing Coursework",
+      "url": "https://github.com/AhmadAmaan/EE604-ImageProcessing",
+      "description": "Python and notebook implementations developed for IIT Kanpur’s image processing course, documenting practical work with image-processing algorithms and visual data.",
+      "placement": "coursework"
+    },
+    {
+      "title": "Territorial Attack",
+      "url": "https://github.com/AhmadAmaan/Territorial-Attack",
+      "description": "A team game-development project from IIT Kanpur’s Game Development Society, built in Unity with C# gameplay scripts, character controls, combat mechanics, and game UI.",
+      "placement": "more_projects"
+    },
+    {
+      "title": "Amazon Price Tracker",
+      "url": "https://github.com/AhmadAmaan/Price-Tracker",
+      "description": "A Python automation project that checks an Amazon product’s price and sends an email alert when it drops, combining HTML parsing, recurring checks, and SMTP notifications.",
+      "placement": "more_projects"
+    },
+    {
+      "title": "Codeforces Stress Testing Platform",
+      "description": "A programming-club project using Go concurrency, web scraping, database integration, and automated grading to stress-test Codeforces submissions.",
+      "placement": "more_projects"
+    }
+  ],
+  "writing": [
+    {
+      "title": "Ronaldo’s Last Dance: I Built a World Cup Predictor to See If Portugal Can Actually Win",
+      "url": "https://aamaan.substack.com/p/ronaldos-last-dance-i-built-a-world",
+      "description": "The story behind my World Cup simulator: how team ratings, lineups, and 100,000 simulated tournaments turn a football question into a probability model, and where that model still falls short.",
+      "published": "2026-06-13"
+    }
+  ]
+}

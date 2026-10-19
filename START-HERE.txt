@@ -1,0 +1,51 @@
+AHMAD AMAAN — PERSONAL WEBSITE
+
+Local preview
+  From this folder, run:
+    python3 -m http.server 4173
+  Open http://localhost:4173.
+
+Build
+  Rebuild page content:
+    python3 build.py
+  Rebuild the 3D scene and pages:
+    npm ci
+    npm run build
+  The committed HTML, JavaScript, and assets can be hosted as a static site.
+
+Source files
+  build.py                  Page templates and detail-page content
+  hero.html                 Homepage introduction and chapter links
+  content.json              Project summaries and technology lists
+  previews.py               Project artwork and fallback illustration
+  src/hero-scene.jsx         React Three Fiber hero scene
+  assets/styles.css         Base styles
+  assets/motion.css         Theme, responsive layout, and motion styles
+  assets/site.js            Navigation, filtering, and motion controls
+
+Deployment packages
+  Run python3 package-site.py.
+  The upload-ready website and editable source ZIPs are written to dist/.
+  Dependencies, caches, Git metadata, and dist/ are excluded from source ZIPs.
+
+GitHub Pages
+  Create a public repository named AhmadAmaan.github.io.
+  Push the project files, excluding files listed in .gitignore.
+  In Settings > Pages, select Deploy from a branch, main, / (root).
+  Alternatively, upload the extracted upload-ready package to the repo root.
+  The site address is https://ahmadamaan.github.io.
+  https://docs.github.com/en/pages/quickstart
+
+Content
+  Homepage sections: About, Projects, Research, and Writings.
+  The research detail page includes the paper's interface figure.
+  Articles link to Substack. Contact options offer Gmail and email copying.
+  Profile links live in the header.
+
+Motion and accessibility
+  The desktop hero uses React Three Fiber, Three.js, and GSAP.
+  Mobile and reduced-motion layouts use the SVG fallback.
+  Chapter links work with a keyboard and without JavaScript.
+  The motion control saves its preference locally. The renderer pauses while
+  the hero is offscreen or the browser document is hidden.
+  Dependency license notices are in assets/vendor/.

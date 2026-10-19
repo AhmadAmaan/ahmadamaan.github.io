@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="dist">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/Ahmad-Amaan-website-source.zip!/" />
+      <root url="jar://$PROJECT_DIR$/dist/Ahmad-Amaan-website-ready-to-upload.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
