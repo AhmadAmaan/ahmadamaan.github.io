@@ -107,8 +107,6 @@ function Architecture({ model, host, hero, stage, isPaused }) {
     nodeLinks.forEach(link=>{link.addEventListener('pointerenter',highlight);link.addEventListener('focus',highlight);link.addEventListener('pointerleave',unhighlight);link.addEventListener('blur',unhighlight);});
     const onScroll = () => {
       const rect=hero.getBoundingClientRect();
-      // The observer may fire before the hero clears the sticky header.
-      // Check visibility during scrolling so returning to the top resumes frames.
       const shouldAnimate=!document.hidden && rect.bottom>88 && rect.top<innerHeight && !isPaused();
       if(shouldAnimate!==active)update();
       if (isPaused()) return;

@@ -1,4 +1,3 @@
-"""Package only deployment assets and editable source, never node_modules."""
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
@@ -12,6 +11,6 @@ with ZipFile(output/'Ahmad-Amaan-website-ready-to-upload.zip','w',ZIP_DEFLATED) 
 with ZipFile(output/'Ahmad-Amaan-website-source.zip','w',ZIP_DEFLATED) as archive:
     for path in root.rglob('*'):
         relative=path.relative_to(root)
-        if any(part in ('node_modules','__pycache__','.git','dist') for part in relative.parts): continue
+        if any(part in ('node_modules','__pycache__','.git','dist','.idea','.oca') for part in relative.parts): continue
         if path.is_file(): archive.write(path,Path('portfolio')/relative)
 print('Packaged deployable website and editable source, excluding dependencies.')

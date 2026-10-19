@@ -1,4 +1,3 @@
-"""Generate a portable static portfolio. Run: python3 build.py"""
 import html
 import json
 import re

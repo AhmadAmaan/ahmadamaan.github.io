@@ -1,4 +1,4 @@
-/* Progressive enhancement: content and links do not depend on GSAP. */
+
 const toggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.nav-links');
 if (toggle && navigation) {
@@ -67,7 +67,7 @@ function addSVG(parent, tag, attributes) {
   return element;
 }
 
-/* Each thumbnail has a distinct motion vocabulary. These are conceptual previews. */
+
 const cardAnimations = [];
 document.querySelectorAll('.project-card').forEach((card, index) => {
   const svg = card.querySelector('svg');
@@ -210,7 +210,7 @@ if (gsap) {
   labelButton();setupMotion();
 }
 
-/* Load the actual React Three Fiber scene only for suitable desktop visitors. */
+
 if (hero) {
   let disposeScene=null;
   let generation=0;

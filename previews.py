@@ -1,4 +1,3 @@
-"""Original, lightweight vector artwork for the project's conceptual previews."""
 from html import escape
 
 def label(x,y,value,size=9,color='#c5af98',**attrs):
