@@ -164,6 +164,7 @@ function setupMotion() {
     document.querySelectorAll('.section-heading,.research-card,.writing-card,.timeline-item,.case-content').forEach(node=>revealObserver.observe(node));
     cleanup.push(()=>revealObserver.disconnect());
 
+    const mobilePreviews=[];
     cardAnimations.forEach(parts => {
       let activeTween;
       const play = () => { activeTween?.kill(); activeTween = animateCard(parts); };
@@ -175,25 +176,50 @@ function setupMotion() {
         listen(parts.visual,'pointermove',event=>{const r=parts.visual.getBoundingClientRect();xTo((event.clientX-r.left-r.width/2)/r.width*5);yTo(-(event.clientY-r.top-r.height/2)/r.height*4);});
         listen(parts.visual,'pointerleave',()=>{xTo(0);yTo(0);});
       } else {
-        let inView=false;
-        let replayTimer=null;
-        const drift=gsap.fromTo(parts.svg,{rotationY:-2,rotationX:1.1,scale:1.015},{rotationY:2,rotationX:-1.1,scale:1.035,duration:2.4,repeat:-1,yoyo:true,ease:'sine.inOut',paused:true,transformOrigin:'50% 50%'});
-        const syncPreview=()=>{
-          const active=inView && !document.hidden && motionAllowed();
-          drift.paused(!active);
-          if(active && replayTimer===null){play();replayTimer=setInterval(play,3200);}
-          if(!active){clearInterval(replayTimer);replayTimer=null;activeTween?.pause();}
-        };
-        const previewObserver=new IntersectionObserver(entries=>{
-          entries.forEach(entry=>{inView=entry.isIntersecting && entry.intersectionRatio>=.35;syncPreview();});
-        },{threshold:[0,.35]});
-        previewObserver.observe(parts.visual);
-        listen(document,'visibilitychange',syncPreview);
-        listen(parts.visual,'pointerdown',play);
-        cleanup.push(()=>{previewObserver.disconnect();clearInterval(replayTimer);drift.revert();});
+        let focused=false;
+        const xTo=gsap.quickTo(parts.svg,'rotationX',{duration:.45,ease:'power3.out'});
+        const yTo=gsap.quickTo(parts.svg,'rotationY',{duration:.45,ease:'power3.out'});
+        mobilePreviews.push({visual:parts.visual,update:(active,offset=0)=>{
+          if(active)xTo(Math.max(-2.5,Math.min(2.5,offset*6)));
+          if(active===focused)return;
+          focused=active;
+          parts.visual.classList.toggle('is-motion-focus',active);
+          yTo(active?2:0);
+          gsap.to(parts.svg,{scale:active?1.025:1,duration:.45,ease:'power3.out',overwrite:'auto'});
+          if(active)play();
+          else{activeTween?.revert();activeTween=null;xTo(0);}
+        }});
+        cleanup.push(()=>{xTo.tween.kill();yTo.tween.kill();parts.visual.classList.remove('is-motion-focus');});
       }
       cleanup.push(()=>{activeTween?.revert();gsap.set(parts.svg,{clearProps:'transform'});});
     });
+    if(mobilePreviews.length){
+      let frame=null;
+      const syncMobilePreviews=()=>{
+        frame=null;
+        let selected=null;
+        let nearest=Infinity;
+        let selectedOffset=0;
+        if(!document.hidden && motionAllowed()){
+          const top=document.querySelector('.header')?.getBoundingClientRect().bottom||0;
+          mobilePreviews.forEach(preview=>{
+            const rect=preview.visual.getBoundingClientRect();
+            if(rect.height<=0 || rect.width<=0)return;
+            const visible=Math.max(0,Math.min(rect.bottom,innerHeight)-Math.max(rect.top,top))/rect.height;
+            const offset=((rect.top+rect.bottom)/2-innerHeight/2)/innerHeight;
+            if(visible>=.35 && Math.abs(offset)<=.4 && Math.abs(offset)<nearest){selected=preview;nearest=Math.abs(offset);selectedOffset=offset;}
+          });
+        }
+        mobilePreviews.forEach(preview=>preview.update(preview===selected,preview===selected?selectedOffset:0));
+      };
+      const schedule=()=>{if(frame===null)frame=requestAnimationFrame(syncMobilePreviews);};
+      listen(window,'scroll',schedule);
+      listen(window,'resize',schedule);
+      listen(document,'visibilitychange',syncMobilePreviews);
+      listen(document,'click',event=>{if(event.target.closest('.filter'))schedule();});
+      schedule();
+      cleanup.push(()=>{if(frame!==null)cancelAnimationFrame(frame);});
+    }
     return ()=>cleanup.forEach(fn=>fn());
   });
 }
